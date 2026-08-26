@@ -1,0 +1,23 @@
+{
+  "name": "what-touch-leaves-behind",
+  "version": "1.0.0",
+  "description": "Interactive installation using contact microphones, Max/MSP, OSC, WebSocket and p5.js.",
+  "main": "bridge/server.js",
+  "scripts": {
+    "start": "node bridge/server.js"
+  },
+  "keywords": [
+    "maxmsp",
+    "p5js",
+    "osc",
+    "websocket",
+    "interactive-installation"
+  ],
+  "author": "Yingning Liu",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "osc": "^2.4.5",
+    "ws": "^8.21.0"
+  }
+}
