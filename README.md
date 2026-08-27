@@ -10,57 +10,37 @@ Course: Computational Arts – Final Project 2026
 
 *What Touch Leaves Behind* is an interactive installation exploring the translation between physical touch, sound, and visual texture.
 
-Four contact microphones capture interactions with four textured surfaces. The physical sounds of rubbing, scratching, and tapping are processed in Max/MSP, while the amplitude data is sent to a p5.js visual system. Each interaction gradually reveals a corresponding plant texture on screen.
+Four contact microphones capture interactions with four textured surfaces. The physical sounds of rubbing, scratching, and tapping are processed in Max/MSP, while the amplitude data is sent to a p5.js visual system, where each interaction gradually reveals a corresponding plant texture.
 
-Pre-analysed image and texture data are also used to generate and shape sound, creating different sonic responses for each surface.
+Pre-analysed image data is also used to shape and generate sound, creating a different sonic response for each texture.
 
 ## Instructions
 
-### 1. Connect the audio interface
+### 1. Download and install
 
-Connect four contact microphones to Inputs 5–8 of the audio interface.
+Download or clone the project and open the project folder in VS Code or a terminal.
 
-Open Max/MSP and go to:
+Install the required Node.js dependencies:
 
-**Options → Audio Status**
+`npm install`
 
-Select the correct audio interface for both Input and Output.
+### 2. Start the server
 
-Check that:
-- Inputs 5–8 correspond to the four contact microphones
-- Outputs 1–2 are correctly assigned
+From the project root, run:
 
-Turn on DSP/audio in Max.
+`node bridge/server.js`
 
-### 2. Open the Max/MSP patch
+The server receives OSC data from Max/MSP and sends it to the browser through WebSocket.
+
+### 3. Open the Max/MSP patch
 
 Open:
 
 `max/texturesound.maxpat`
 
-Turn on all controls marked **START** in orange.
+Connect the audio interface and four contact microphones.
 
-This activates:
-- visual data output
-- ambient background sound
-- Plant 1 texture data
-- Plant 2 texture data
-- Plant 3 texture data
-- Plant 4 texture data
-
-The four data files (`plant1data`–`plant4data`) should remain in the same folder as the Max patch.
-
-### 3. Start the server
-
-In VS Code or a terminal, open the project root and run:
-
-`npm install`
-
-Then:
-
-`npm start`
-
-The server receives OSC data from Max/MSP and sends it to the browser through WebSocket.
+Follow the **SETUP / HOW TO RUN** instructions inside the Max patch and turn on the orange-labelled **START** controls and visual output gate.
 
 ### 4. Open the visual system
 
@@ -68,17 +48,13 @@ In a browser, go to:
 
 `http://localhost:3000`
 
-The visual system should now respond to the four contact microphone inputs.
+The system is now ready for interaction.
 
-### 5. Run the installation
-
-Rub, scratch, or tap the four textured surfaces.
-
-The corresponding contact microphone input controls the gradual reveal of each plant texture, while Max/MSP generates and processes the associated sound.
+Rub, scratch, or tap the four textured surfaces to generate sound and reveal the corresponding visual textures.
 
 ## System Overview
 
-The installation uses the following data flow:
+The installation connects physical interaction, sound processing, and generative visuals through the following system:
 
 **Physical Touch → Contact Microphone → Max/MSP → Sound**
 
@@ -86,29 +62,23 @@ The installation uses the following data flow:
 
 ### Max/MSP
 
-The Max/MSP patch handles four main processes:
+The Max/MSP patch receives and processes four contact microphone inputs.
 
-**Contact microphone input**  
-Four contact microphones capture physical interaction. Their amplitude values are also sent to the visual system via OSC.
+Pre-analysed brightness and texture-density data from four plant images are used to influence sound parameters such as delay time and filter cutoff frequency. Additional pre-calculated texture datasets are mapped to pitch patterns, giving each texture a different sonic response.
 
-**Image-derived audio processing**  
-Brightness and texture-density values were analysed from the four plant images in advance and stored in the final patch. These values influence parameters including delay time and filter cutoff frequency.
+The patch also generates an ambient background sound that decreases in volume during interaction and returns when touch stops.
 
-**Ambient background sound**  
-Three independently timed generative chord layers create the ambient soundscape. When touch is detected, the background sound decreases in volume and returns when interaction stops.
-
-**Texture-based sound generation**  
-Four pre-calculated texture datasets (`plant1data`–`plant4data`) contain values derived from the four plant images. Their distributions are mapped to pitch ranges, producing a different sonic pattern for each texture.
+Detailed setup and patch annotations are provided directly inside `texturesound.maxpat`.
 
 ## Project Structure
 
-`bridge/` – Node.js bridge between Max/MSP and the browser
+`bridge/` – Node.js bridge for OSC and WebSocket communication
 
-`max/` – Max/MSP patch and pre-calculated plant texture data
+`max/` – Max/MSP patch and pre-calculated texture data
 
 `web/` – p5.js visual system and texture images
 
-`package.json` – Node.js project configuration and dependencies
+`package.json` – Node.js dependencies and project configuration
 
 ## Notes
 
@@ -116,14 +86,13 @@ This system is designed to run locally.
 
 An audio interface and four contact microphones are required for the full interaction.
 
-The Max/MSP patch uses Inputs 5–8 and Outputs 1–2.
-
 The system uses:
+
 - OSC port `8000`
 - Web server port `3000`
 - WebSocket port `8081`
 
-The p5.js library is loaded through a CDN, so an internet connection is required when loading the visual system unless p5.js is hosted locally.
+The p5.js library is loaded through a CDN, so an internet connection is required when initially loading the visual system.
 
 ## Tools and Frameworks
 
