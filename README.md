@@ -17,6 +17,7 @@ Pre-analysed image data is also used to shape and generate sound, creating a dif
 ## Project Links
 
 Project Video: https://vimeo.com/1223076653?fl=ip&fe=ec
+
 GitHub Repository: https://github.com/YingningLiu610/what-touch-leaves-behind.git
 
 ## Instructions
